@@ -1,4 +1,4 @@
-# time_series_models
+# Time series prediction models
 Reference of Time Series Modeling
 
 # Models 
