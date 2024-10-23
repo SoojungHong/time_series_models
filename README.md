@@ -11,6 +11,10 @@ Autoregressive Integrated Moving Average (ARIMA): ARIMA models are commonly used
 Seasonal ARIMA (SARIMA): If there is a strong seasonality component (e.g., daily or weekly trading volume patterns), SARIMA can model it explicitly.
 Limitations: ARIMA and SARIMA primarily work for univariate data and won’t utilize the full power of features like mid-price and last-hour volumes.
 
+p: The number of lag observations to include in the model (autoregressive component).
+d: The degree of differencing (to make the series stationary).
+q: The size of the moving average window (errors).
+
 ## 2. Regression-Based Models
 Linear Regression: You can start with a simple linear regression model using your features (e.g., volume in the last minute, volume in the last hour, and mid-price) as predictors for the volume in the next hour.
 Ridge or Lasso Regression: Regularized versions of linear regression can help if some features are not very predictive or if you want to avoid overfitting.
