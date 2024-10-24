@@ -105,3 +105,43 @@ for pair, (model, order, mape) in best_models.items():
     print(f"Currency Pair: {pair}, Best ARIMA Order: {order}, MAPE: {mape}")
 
 
+
+#---------------------
+#  predict function
+#---------------------
+def predict(fx_df, models, current_data):
+    """
+    Predict the next hour's volume for each currency pair using the trained ARIMA models.
+    
+    Parameters:
+    - fx_df: The original DataFrame containing the historical FX data.
+    - models: A dictionary of trained ARIMA models for each currency pair.
+    - current_data: A DataFrame with the latest data for each currency pair, 
+                    including 'volume_last_minute', 'mid_price', and 'spread'.
+                    
+    Returns:
+    - predictions: A dictionary containing the predicted 'volumeNextHour' for each currency pair.
+    """
+    predictions = {}
+    
+    for pair in models.keys():
+        model, order, mape = models[pair]
+        
+        # Extract the latest data for this currency pair
+        current_row = current_data[current_data['currency_pair'] == pair].iloc[-1]
+        
+        # Prepare the exogenous variables (features: 'volume_last_minute', 'mid_price', 'spread')
+        exog_next = np.array([[current_row['volume_last_minute'], 
+                               current_row['mid_price'], 
+                               current_row['spread']]])
+        
+        # Forecast the next hour's volume using the trained ARIMA model
+        forecast = model.forecast(steps=1, exog=exog_next)[0]
+        
+        # Store the prediction
+        predictions[pair] = forecast
+        
+        print(f"Currency Pair: {pair} | Predicted VolumeNextHour: {forecast}")
+    
+    return predictions
+
